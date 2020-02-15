@@ -1,0 +1,27 @@
+{
+  "name": "damage-report-client-dht",
+  "version": "1.0.0-alpha.1",
+  "description": "Reports temperature & humidity data of a DHT sensor to the damage-report service.",
+  "scripts": {
+    "start": "node src/index.js | ./node_modules/.bin/bunyan",
+    "test": "echo \"no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rekhyt/damage-report-client-dht.git"
+  },
+  "author": "timo.ebel@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rekhyt/damage-report-client-dht/issues"
+  },
+  "homepage": "https://github.com/Rekhyt/damage-report-client-dht#readme",
+  "dependencies": {
+    "bunyan": "^1.8.12",
+    "node-dht-sensor": "^0.4.1",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.8"
+  },
+  "devDependencies": {},
+  "keywords": []
+}
