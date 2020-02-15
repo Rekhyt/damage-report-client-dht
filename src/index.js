@@ -20,7 +20,7 @@ const logger = bunyan.createLogger({ name: 'damage-report-client-dht' })
 let simulationInterval
 if (process.env.SIMULATE) {
   updateSimulation()
-  simulationInterval = setInterval(updateSimulation, 60000)
+  simulationInterval = setInterval(updateSimulation, 5000)
 }
 
 exec().catch(err => {
@@ -30,7 +30,7 @@ exec().catch(err => {
 
 async function exec () {
   await processor()
-  const interval = setInterval(processor, process.env.INTERVAL || 5000)
+  const interval = setInterval(processor, process.env.INTERVAL || 60000)
 
   process.on('SIGINT', () => {
     clearInterval(interval)
