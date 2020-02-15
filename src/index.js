@@ -70,9 +70,16 @@ async function processor () {
 
 async function read (type, pin, timeout) {
   return new Promise(async (resolve, reject) => {
-    const timer = setTimeout(() => reject('Error reading sensors.'), timeout)
+    let timedOut = false
+    const timer = setTimeout(() => {
+      timedOut = true
+      reject('Error reading sensors.')
+    }, timeout)
 
     const data = await sensor.read(type, pin)
+
+    if (timedOut) return
+
     clearTimeout(timer)
     resolve(data)
   })
