@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Rekhyt/damage-report-client-dht#readme",
   "dependencies": {
     "bunyan": "^1.8.12",
+    "bunyan-loggly": "^1.4.1",
     "node-dht-sensor": "^0.4.1",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8"

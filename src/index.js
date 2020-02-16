@@ -5,19 +5,32 @@ const request = require('request-promise-native')
 const sensor = require('node-dht-sensor').promises
 
 if (!process.env.TYPE || !process.env.PIN || !process.env.API_URL || !process.env.LOCATION_ID) {
-  console.error('Environment variables TYPE, PIN and API_URL must be set.')
+  console.error('Environment variables TYPE, PIN and API_URL must be set.\n')
   console.log('Available environment variables:')
-  console.log('TYPE          - required - One of 11 or 22 for the DHT11 or DHT22/AM2302 respectively.')
-  console.log('PIN           - required - The GPIO pin that the sensor is connected to.')
-  console.log('API_URL       - required - The URL to the damage-report API.')
-  console.log('LOCATION_ID   - required - ID of the location of the sensor.')
-  console.log('LOCATION_NAME - optional - Name of the location of the sensor. Defaults to the location ID.')
-  console.log('TIMEOUT       - optional - The time (ms) to wait for a signal until starting a new try. Defaults to 5000.')
-  console.log('INTERVAL      - optional - The time (ms) to wait between checking the sensors. Defaults to 60000.')
+  console.log('TYPE             - required - One of 11 or 22 for the DHT11 or DHT22/AM2302 respectively.')
+  console.log('PIN              - required - The GPIO pin that the sensor is connected to.')
+  console.log('API_URL          - required - The URL to the damage-report API.')
+  console.log('LOCATION_ID      - required - ID of the location of the sensor.')
+  console.log('LOCATION_NAME    - optional - Name of the location of the sensor. Defaults to the location ID.')
+  console.log('TIMEOUT          - optional - The time (ms) to wait for a signal until starting a new try. Defaults to 5000.')
+  console.log('INTERVAL         - optional - The time (ms) to wait between checking the sensors. Defaults to 60000.')
+  console.log('LOGGLY_SUBDOMAIN - optional - The loggly.com sub domain to log to. If falsy logs go to stdout only.')
+  console.log('LOGGLY_TOKEN     - optional - A loggly.com access token. If falsy logs go to stdout only.')
   process.exit(1)
 }
 
-const logger = bunyan.createLogger({ name: 'damage-report-client-dht' })
+const logStreams = [{ stream: process.stdout }]
+if (process.env.LOGGLY_SUBDOMAIN && process.env.LOGGLY_TOKEN) {
+  logStreams.push({
+    type: 'raw',
+    stream: new (require('bunyan-loggly'))({
+      subdomain: process.env.LOGGLY_SUBDOMAIN,
+      token: process.env.LOGGLY_TOKEN
+    })
+  })
+}
+
+const logger = bunyan.createLogger({ name: 'damage-report-client-dht', streams: logStreams })
 
 let simulationInterval
 if (process.env.SIMULATE) {
