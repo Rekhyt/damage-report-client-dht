@@ -6,6 +6,9 @@
     "start": "node src/index.js | ./node_modules/.bin/bunyan",
     "test": "echo \"no test specified\""
   },
+  "bin": {
+    "damage-report-client-dht": "./src/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Rekhyt/damage-report-client-dht.git"

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const bunyan = require('bunyan')
 const request = require('request-promise-native')
 const sensor = require('node-dht-sensor').promises
