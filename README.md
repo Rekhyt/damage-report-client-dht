@@ -2,6 +2,11 @@
 Reports temperature &amp; humidity data of a DHT sensor in a Raspberry Pi to the
 [damage-report](https://github.com/Rekhyt/damage-report) service.
 
+## Installation
+This is a single standalone CLI script. I recommend installing it globally:
+
+`npm i -g damage-report-client-dht`
+
 ## Environment Variables
 * `TYPE` - **(required)** One of 11 or 22 for the DHT11 or DHT22/AM2302 respectively.
 * `PIN` - **required** The GPIO pin that the sensor is connected to.
@@ -15,7 +20,7 @@ Reports temperature &amp; humidity data of a DHT sensor in a Raspberry Pi to the
 ## Usage
 Start a simulation:
 
-`TYPE=22 PIN=4 API_URL=http://locahost:8000 LOCATION_ID=kitchen LOCATION_NAME=Kitchen SIMULATE=1 npm start`
+`TYPE=22 PIN=4 API_URL=http://locahost:8000 LOCATION_ID=kitchen LOCATION_NAME=Kitchen SIMULATE=1 damage-report-client-dht`
 
 Start monitoring sensors (tested on Raspberry Pi only):
-`TYPE=22 PIN=4 API_URL=http://locahost:8000 LOCATION_ID=kitchen LOCATION_NAME=Kitchen npm start`
+`TYPE=22 PIN=4 API_URL=http://locahost:8000 LOCATION_ID=kitchen LOCATION_NAME=Kitchen damage-report-client-dht`
