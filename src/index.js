@@ -3,6 +3,7 @@
 const bunyan = require('bunyan')
 const request = require('request-promise-native')
 const sensor = require('node-dht-sensor').promises
+const CronJob = require('cron').CronJob
 
 if (!process.env.TYPE || !process.env.PIN || !process.env.API_URL || !process.env.LOCATION_ID) {
   console.error('Environment variables TYPE, PIN and API_URL must be set.\n')
@@ -13,9 +14,12 @@ if (!process.env.TYPE || !process.env.PIN || !process.env.API_URL || !process.en
   console.log('LOCATION_ID      - required - ID of the location of the sensor.')
   console.log('LOCATION_NAME    - optional - Name of the location of the sensor. Defaults to the location ID.')
   console.log('TIMEOUT          - optional - The time (ms) to wait for a signal until starting a new try. Defaults to 5000.')
-  console.log('INTERVAL         - optional - The time (ms) to wait between checking the sensors. Defaults to 60000.')
+  console.log('CRON_PATTERN     - optional - A cron pattern (1) describing when to update. Defaults to "* * * * *" (every minute).')
+  console.log('SIMULATE         - optional - Set to "true" to skip reading sensors and send random data instead. Defaults to false.')
   console.log('LOGGLY_SUBDOMAIN - optional - The loggly.com sub domain to log to. If falsy logs go to stdout only.')
   console.log('LOGGLY_TOKEN     - optional - A loggly.com access token. If falsy logs go to stdout only.')
+  console.log()
+  console.log('(1) Prepend a column for seconds granularity, e.g. every 13th second: "13 * * * * *')
   process.exit(1)
 }
 
@@ -44,11 +48,11 @@ exec().catch(err => {
 })
 
 async function exec () {
-  await processor()
-  const interval = setInterval(processor, process.env.INTERVAL || 60000)
+  const job = new CronJob(process.env.CRON_PATTERN || '* * * * *', processor)
+  job.start()
 
   process.on('SIGINT', () => {
-    clearInterval(interval)
+    job.stop()
     clearInterval(simulationInterval)
     logger.info('Got SIGINT, terminating . . .')
     process.exit(0)

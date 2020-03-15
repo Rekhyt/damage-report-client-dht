@@ -22,6 +22,7 @@
   "dependencies": {
     "bunyan": "^1.8.12",
     "bunyan-loggly": "^1.4.1",
+    "cron": "^1.8.2",
     "node-dht-sensor": "^0.4.1",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8"
