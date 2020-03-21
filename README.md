@@ -8,14 +8,11 @@ This is a single standalone CLI script. I recommend installing it globally:
 `npm i -g damage-report-client-dht`
 
 ## Environment Variables
-* `TYPE` - **(required)** One of 11 or 22 for the DHT11 or DHT22/AM2302 respectively.
-* `PIN` - **required** The GPIO pin that the sensor is connected to.
-* `API_URL` - **required** The URL to the damage-report API.
-* `LOCATION_ID` - **required** ID of the location of the sensor.
-* `LOCATION_NAME` -  Name of the location of the sensor. Defaults to the location ID.
-* `TIMEOUT` - The time (ms) to wait for a signal until starting a new try. Defaults to 5000.
-* `INTERVAL` - The time (ms) to wait between checking the sensors. Defaults to 60000.
-* `SIMULATE` - If truthy, the actual sensor is not called, instead new data is randomly generated every 5 seconds.
+Run `damage-report-client-dht` to get the list of available environment variables for configuration.
+
+Use `CONFIG_PATH` to specify a `.env`-style file to be used:
+
+`CONFIG_PATH=~/.config/dht-env damage-report-client-dht`
 
 ## Usage
 Start a simulation:

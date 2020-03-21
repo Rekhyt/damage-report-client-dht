@@ -1,12 +1,24 @@
 #!/usr/bin/env node
 
+const dotenvResult = require('dotenv').config({ path: process.env.CONFIG_PATH })
+if (dotenvResult.error) {
+  switch (dotenvResult.error.code) {
+    case 'ENOENT':
+      console.warn(`.env file not found at ${dotenvResult.error.path}`)
+      break
+    default:
+      console.error(dotenvResult.error)
+      process.exit(1)
+  }
+}
+
 const bunyan = require('bunyan')
 const request = require('request-promise-native')
 const sensor = require('node-dht-sensor').promises
 const CronJob = require('cron').CronJob
 
 if (!process.env.TYPE || !process.env.PIN || !process.env.API_URL || !process.env.LOCATION_ID) {
-  console.error('Environment variables TYPE, PIN and API_URL must be set.\n')
+  console.error('Environment variables TYPE, PIN, LOCATION_ID and API_URL must be set.\n')
   console.log('Available environment variables:')
   console.log('TYPE             - required - One of 11 or 22 for the DHT11 or DHT22/AM2302 respectively.')
   console.log('PIN              - required - The GPIO pin that the sensor is connected to.')
@@ -18,6 +30,7 @@ if (!process.env.TYPE || !process.env.PIN || !process.env.API_URL || !process.en
   console.log('SIMULATE         - optional - Set to "true" to skip reading sensors and send random data instead. Defaults to false.')
   console.log('LOGGLY_SUBDOMAIN - optional - The loggly.com sub domain to log to. If falsy logs go to stdout only.')
   console.log('LOGGLY_TOKEN     - optional - A loggly.com access token. If falsy logs go to stdout only.')
+  console.log('CONFIG_PATH      - optional - Path to a .env-style file to load environment variables from. Default to ".env".')
   console.log()
   console.log('(1) Prepend a column for seconds granularity, e.g. every 13th second: "13 * * * * *')
   process.exit(1)
