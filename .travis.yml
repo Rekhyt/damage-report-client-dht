@@ -7,6 +7,6 @@ node_js:
 deploy:
   provider: npm
   email: ${NPM_USER}
-  api_key: ${NPM_KEY}"
+  api_key: ${NPM_KEY}
   on:
     tags: true
