@@ -1,6 +1,6 @@
 {
   "name": "damage-report-client-dht",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "description": "Reports temperature & humidity data of a DHT sensor to the damage-report service.",
   "scripts": {
     "start": "node src/index.js | ./node_modules/.bin/bunyan",
