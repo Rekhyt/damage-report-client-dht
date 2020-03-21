@@ -1,4 +1,8 @@
 # damage-report-client-dht
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.org/Rekhyt/damage-report-client-dht.svg?branch=master)](https://travis-ci.org/Rekhyt/damage-report)
+[![npm](https://img.shields.io/npm/v/damage-report-client-dht)](https://www.npmjs.com/package/damage-report-client-dht)
+
 Reports temperature &amp; humidity data of a DHT sensor in a Raspberry Pi to the
 [damage-report](https://github.com/Rekhyt/damage-report) service.
 
@@ -21,3 +25,6 @@ Start a simulation:
 
 Start monitoring sensors (tested on Raspberry Pi only):
 `TYPE=22 PIN=4 API_URL=http://locahost:8000 LOCATION_ID=kitchen LOCATION_NAME=Kitchen damage-report-client-dht`
+
+## Changelog
+See [CHANGELOG]() for a list of changes.
