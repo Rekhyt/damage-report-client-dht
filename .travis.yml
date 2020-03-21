@@ -1,0 +1,10 @@
+dist: xenial
+
+language: node
+
+deploy:
+  provider: npm
+  email: ${NPM_USER}
+  api_key: ${NPM_KEY}"
+  on:
+    tags: true
