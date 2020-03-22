@@ -30,7 +30,7 @@ if (!process.env.TYPE || !process.env.PIN || !process.env.API_URL || !process.en
   console.log('SIMULATE         - optional - Set to "true" to skip reading sensors and send random data instead. Defaults to false.')
   console.log('LOGGLY_SUBDOMAIN - optional - The loggly.com sub domain to log to. If falsy logs go to stdout only.')
   console.log('LOGGLY_TOKEN     - optional - A loggly.com access token. If falsy logs go to stdout only.')
-  console.log('CONFIG_PATH      - optional - Path to a .env-style file to load environment variables from. Default to ".env".')
+  console.log('CONFIG_PATH      - optional - Path to a .env-style file to load environment variables from. Defaults to ".env".')
   console.log()
   console.log('(1) Prepend a column for seconds granularity, e.g. every 13th second: "13 * * * * *')
   process.exit(1)
