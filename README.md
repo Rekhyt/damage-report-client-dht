@@ -24,6 +24,7 @@ Start a simulation:
 `TYPE=22 PIN=4 API_URL=http://locahost:8000 LOCATION_ID=kitchen LOCATION_NAME=Kitchen SIMULATE=1 damage-report-client-dht`
 
 Start monitoring sensors (tested on Raspberry Pi only):
+
 `TYPE=22 PIN=4 API_URL=http://locahost:8000 LOCATION_ID=kitchen LOCATION_NAME=Kitchen damage-report-client-dht`
 
 ## Changelog
