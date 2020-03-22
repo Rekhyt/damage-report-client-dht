@@ -27,4 +27,4 @@ Start monitoring sensors (tested on Raspberry Pi only):
 `TYPE=22 PIN=4 API_URL=http://locahost:8000 LOCATION_ID=kitchen LOCATION_NAME=Kitchen damage-report-client-dht`
 
 ## Changelog
-See [CHANGELOG]() for a list of changes.
+See [CHANGELOG](CHANGELOG.md) for a list of changes.
