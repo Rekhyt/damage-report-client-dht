@@ -1,6 +1,6 @@
 # damage-report-client-dht
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/Rekhyt/damage-report-client-dht.svg?branch=master)](https://travis-ci.org/Rekhyt/damage-report)
+[![Build Status](https://travis-ci.org/Rekhyt/damage-report-client-dht.svg?branch=master)](https://travis-ci.org/Rekhyt/damage-report-client-dht)
 [![npm](https://img.shields.io/npm/v/damage-report-client-dht)](https://www.npmjs.com/package/damage-report-client-dht)
 
 Reports temperature &amp; humidity data of a DHT sensor in a Raspberry Pi to the
