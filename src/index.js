@@ -114,14 +114,15 @@ async function read (type, pin, timeout) {
       reject('Error reading sensors.')
     }, timeout)
 
-    const data = await sensor.read(type, pin)
-
-    if (timedOut) return
-
-    clearTimeout(timer)
-    resolve(data)
+    try {
+      const data = await sensor.read(type, pin)
+      clearTimeout(timer)
+      resolve(data)
+    } catch (err) {
+      clearTimeout(timer)
+      return reject(err)
+    }
   })
-
 }
 
 function updateSimulation () {
