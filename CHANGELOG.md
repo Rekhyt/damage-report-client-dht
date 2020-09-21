@@ -1,6 +1,12 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+* usage of console.log / console.error when it should use bunyan
+* unhandled promise rejection when reading the sensor fails right away (no time out)
+
+### Added
+* instance specific data such as locationId, name, DHT type and API URL to all log messages
 
 ## [1.0.2] - 2020-09-09
 ### Fixed
