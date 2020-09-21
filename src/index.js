@@ -1,21 +1,30 @@
 #!/usr/bin/env node
 
-const dotenvResult = require('dotenv').config({ path: process.env.CONFIG_PATH })
-if (dotenvResult.error) {
-  switch (dotenvResult.error.code) {
-    case 'ENOENT':
-      console.warn(`.env file not found at ${dotenvResult.error.path}`)
-      break
-    default:
-      console.error(dotenvResult.error)
-      process.exit(1)
-  }
-}
-
 const bunyan = require('bunyan')
 const request = require('request-promise-native')
 const sensor = require('node-dht-sensor').promises
 const CronJob = require('cron').CronJob
+
+const logger = bunyan.createLogger({
+  name: 'damage-report-client-dht',
+  streams: [{ stream: process.stdout }],
+  dhtType: process.env.TYPE || null,
+  apiUrl: process.env.API_URL || null,
+  locationId: process.env.LOCATION_ID || null,
+  locationName: process.env.LOCATION_NAME || null
+})
+
+const dotenvResult = require('dotenv').config({ path: process.env.CONFIG_PATH })
+if (dotenvResult.error) {
+  switch (dotenvResult.error.code) {
+    case 'ENOENT':
+      logger.info(`.env file not found at ${dotenvResult.error.path}`)
+      break
+    default:
+      logger.error(dotenvResult.error)
+      process.exit(1)
+  }
+}
 
 if (!process.env.TYPE || !process.env.PIN || !process.env.API_URL || !process.env.LOCATION_ID) {
   console.error('Environment variables TYPE, PIN, LOCATION_ID and API_URL must be set.\n')
@@ -36,9 +45,8 @@ if (!process.env.TYPE || !process.env.PIN || !process.env.API_URL || !process.en
   process.exit(1)
 }
 
-const logStreams = [{ stream: process.stdout }]
 if (process.env.LOGGLY_SUBDOMAIN && process.env.LOGGLY_TOKEN) {
-  logStreams.push({
+  logger.addStream({
     type: 'raw',
     stream: new (require('bunyan-loggly'))({
       subdomain: process.env.LOGGLY_SUBDOMAIN,
@@ -46,8 +54,6 @@ if (process.env.LOGGLY_SUBDOMAIN && process.env.LOGGLY_TOKEN) {
     })
   })
 }
-
-const logger = bunyan.createLogger({ name: 'damage-report-client-dht', streams: logStreams })
 
 let simulationInterval
 if (process.env.SIMULATE) {
