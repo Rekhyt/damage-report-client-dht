@@ -64,30 +64,53 @@ if (process.env.SIMULATE) {
   simulationInterval = setInterval(updateSimulation, 5000)
 }
 
+let job
+let relay
+function setUp () {
+  job = new CronJob(process.env.CRON_PATTERN || '* * * * *', processor)
+
+  const relayPin = parseInt(process.env.RELAY_PIN)
+  if (relayPin && !relayPin.isNaN) relay = new Gpio(relayPin, 'out')
+
+  process.on('SIGINT', () => {
+    job.stop()
+    clearInterval(simulationInterval)
+    cleanUp()
+    logger.info('Got SIGINT, terminating . . .')
+    process.exit(0)
+  })
+
+  process.on('unhandledRejection', (reason, promise) => {
+    cleanUp()
+    logger.error({ reason, promise }, 'Unhandled promise rejection.')
+    process.exit(1)
+  })
+
+  process.on('uncaughtException', error => {
+    cleanUp()
+    logger.error(error, 'Unhandled exception.')
+    process.exit(1)
+  })
+}
+
+function cleanUp () {
+  if (job) job.stop()
+  clearInterval(simulationInterval)
+  if (relay) relay.unexport()
+}
+
+let errorCounter = 0
+async function exec () {
+  setUp()
+  job.start()
+}
+
 exec().catch(err => {
   logger.error(err)
   process.exit(1)
 })
 
-let errorCounter = 0
-let relay
-async function exec () {
-  const job = new CronJob(process.env.CRON_PATTERN || '* * * * *', processor)
-  job.start()
-
-  process.on('SIGINT', () => {
-    job.stop()
-    clearInterval(simulationInterval)
-    relay.unexport()
-    logger.info('Got SIGINT, terminating . . .')
-    process.exit(0)
-  })
-}
-
 async function processor () {
-  const relayPin = parseInt(process.env.RELAY_PIN)
-  if (relayPin && !relayPin.isNaN) relay = new Gpio(relayPin, 'out')
-
   try {
     logger.info('Fetching . . .')
     const data = await read(process.env.TYPE, process.env.PIN, process.env.TIMEOUT || 5000)
