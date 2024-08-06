@@ -25,6 +25,8 @@ Start monitoring sensors (tested on Raspberry Pi only):
 * `API_URL` - **(required)** - The URL to the damage-report API.
 * `LOCATION_ID` - **(required)** - ID of the location of the sensor.
 * `LOCATION_NAME` - **(optional)** - Name of the location of the sensor. Defaults to the location ID.
+* `RELAY_PIN` - **(optional)** - The GPIO pin of a relay used to shortly turn of the sensors when reading fails. Defaults to null.
+* `RELAY_TIME` - **(optional)** - The time (ms) that the sensor should be turned off when reading fails. Defaults to 2500.
 * `TIMEOUT` - **(optional)** - The time (ms) to wait for a signal until starting a new try. Defaults to 5000.
 * `CRON_PATTERN` - **(optional)** - A cron pattern describing when to update. Defaults to "* * * * *" (every minute).
 * `SIMULATE` - **(optional)** - Set to "true" to skip reading sensors and send random data instead. Defaults to false.
@@ -41,6 +43,49 @@ Use `CONFIG_PATH` to specify a `.env`-style file to be used:
 Cron patterns can be standard unix 5 column or non-standard 6 column. When using 6 columns, the first describes seconds.
 
 See https://en.wikipedia.org/wiki/Cron for reference.
+
+## Running With Docker
+It is necessary to run the container in `privileged` mode and with hardware mounts due to its hardware-related nature.
+
+### Run From Docker Hub
+Run the container:
+
+    docker run \
+    --name damage-report-client-dht \
+    --privileged -dv /sys/class/gpio:/sys/class/gpio \
+    -e TYPE=DHT22 \
+    -e PIN=4 \
+    -e LOCATION_ID=kitchen \
+    -e LOCATION_NAME=Kitchen \
+    -e API_URL=http://localhost:8080 \
+    lapwing/damage-report-client-dht
+
+### Build & Run Locally
+Build the container:
+
+`docker build -t dht-client .`
+
+Run the container:
+
+    docker run \
+    --name damage-report-client-dht \
+    --privileged -d
+    -v /sys/class/gpio:/sys/class/gpio \
+    -e TYPE=DHT22 \
+    -e PIN=4 \
+    -e LOCATION_ID=kitchen \
+    -e LOCATION_NAME=Kitchen \
+    -e API_URL=http://localhost:8080 \
+    dht-client
+
+## Relay PIN & Time
+Sometimes the DHT sensors will stop delivering data. The easiest fix to this seems to be cutting power for a short time.
+
+To do this, install a relay on the power line of the sensor, then set the `RELAY_PIN` env to the GPIO that connects to
+the relay's trigger pin.
+
+If `RELAY_PIN` is set it will be set to "HIGH" for 2500 ms (or what's in `RELAY_TIME`) after 3 consecutive read failures.
+
 
 ## Changelog
 See [CHANGELOG](CHANGELOG.md) for a list of changes.

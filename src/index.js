@@ -19,7 +19,7 @@ const dotenvResult = require('dotenv').config({ path: process.env.CONFIG_PATH })
 if (dotenvResult.error) {
   switch (dotenvResult.error.code) {
     case 'ENOENT':
-      logger.info(`.env file not found at ${dotenvResult.error.path}`)
+      logger.info(`.env file not found at ${dotenvResult.error.path} - will read environment variables for settings`)
       break
     default:
       logger.error(dotenvResult.error)
@@ -34,9 +34,9 @@ if (!process.env.TYPE || !process.env.PIN || !process.env.API_URL || !process.en
   console.log('PIN              - required - The GPIO pin that the sensor is connected to.')
   console.log('API_URL          - required - The URL to the damage-report API.')
   console.log('LOCATION_ID      - required - ID of the location of the sensor.')
+  console.log('LOCATION_NAME    - optional - Name of the location of the sensor. Defaults to the location ID.')
   console.log('RELAY_PIN        - optional - The GPIO pin of a relay used to shortly turn of the sensors when reading fails. Defaults to null.')
   console.log('RELAY_TIME       - optional - The time (ms) that the sensor should be turned off when reading fails. Defaults to 2500.')
-  console.log('LOCATION_NAME    - optional - Name of the location of the sensor. Defaults to the location ID.')
   console.log('TIMEOUT          - optional - The time (ms) to wait for a signal until starting a new try. Defaults to 5000.')
   console.log('CRON_PATTERN     - optional - A cron pattern (1) describing when to update. Defaults to "* * * * *" (every minute).')
   console.log('SIMULATE         - optional - Set to "true" to skip reading sensors and send random data instead. Defaults to false.')
