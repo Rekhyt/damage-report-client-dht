@@ -22,7 +22,7 @@
   "dependencies": {
     "bunyan": "^1.8.14",
     "bunyan-loggly": "^1.4.2",
-    "cron": "^1.8.2",
+    "cron": "^3.1.7",
     "dotenv": "^8.2.0",
     "node-dht-sensor": "^0.4.3",
     "onoff": "^6.0.0",
